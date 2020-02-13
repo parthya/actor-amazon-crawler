@@ -64,15 +64,17 @@ function extractSellers($, request) {
             shippingInfo = 'shipping info not included';
         }
 
-        sellers.push({
-            price,
-            priceParsed,
-            condition,
-            sellerName,
-            prime,
-            shippingInfo,
-            shopUrl: sellerShopUrl,
-        });
+        if (prime) {
+          sellers.push({
+              price,
+              priceParsed,
+              condition,
+              sellerName,
+              prime,
+              shippingInfo,
+              shopUrl: sellerShopUrl,
+          });
+        }
     });
     return sellers;
 }
