@@ -87,14 +87,11 @@ async function parseSellerDetail($, request) {
     const item = await extractInfo($);
     const keywords = request.userData.keyword.split(' ');
     const title = item.title.toLowerCase();
-    console.log('****TITLE****', title);
 
     let found = true;
     for (const k of keywords) {
-      console.log('****KEYWORD****', k);
       found = title.search(k.toLowerCase());
-      console.log('****found****', found);
-      if (!found) {
+      if (found === -1) {
         return null;
       }
     }
