@@ -83,8 +83,18 @@ function extractSellers($, request) {
 // to in a way to make sense what they are doing, so this one should be
 // called parseSellerDetails
 async function parseSellerDetail($, request) {
-    const sellers = await extractSellers($, request);
+  
     const item = await extractInfo($);
+    const keywords = item.keyword.split(' ');
+    const title = item.title.toLowerCase();
+
+    for (const k of keywords) {
+      if (!title.search(k.toLowerCase())) {
+        return null;
+      }
+    }
+
+    const sellers = await extractSellers($, request);
     const currency = await getCurrency(request);
 
     if (request.userData.sellers) {
