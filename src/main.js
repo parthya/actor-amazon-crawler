@@ -64,13 +64,13 @@ Apify.main(async () => {
                 try {
                     const items = await parseItemUrls($, request);
                     for (const item of items) {
-                        await requestQueue.addRequest({
-                            url: item.detailUrl,
-                            userData: {
-                                label: 'product',
-                                keyword: request.userData.keyword
-                            },
-                        }, { forefront: true });
+                        // await requestQueue.addRequest({
+                        //     url: item.detailUrl,
+                        //     userData: {
+                        //         label: 'product',
+                        //         keyword: request.userData.keyword
+                        //     },
+                        // }, { forefront: true });
 
                         await requestQueue.addRequest({
                             url: item.url,
@@ -103,7 +103,20 @@ Apify.main(async () => {
             } else if (request.userData.label === 'seller') {
                 try {
                     const item = await parseSellerDetail($, request);
+
+                    let requestProd = request;
+                    requestProd.url = request.userData.detailUrl;
+                    const product = await parseProductPage($, requestProd);
+
                     if (item) {
+
+                        if (product) {
+                          item.description = product.description,
+                          item.itemWeight = product.itemWeight,
+                          item.itemDimensions = product.itemDimensions,
+                          item.modelNumber = product.modelNumber
+                        }
+
                         let paginationUrlSeller;
                         const paginationEle = $('ul.a-pagination li.a-last a');
                         if (paginationEle.length !== 0) {

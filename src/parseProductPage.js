@@ -8,14 +8,6 @@ function extractInfo($) {
     )
         .trim()
         .replace(/\t/g, "");
-    const title = String($("span#productTitle").text()).trim();
-
-    const price = String(
-        $("span.a-color-price")
-            .first()
-            .text()
-            .replace(/\r?\n|\r/g, "")
-    ).trim();
 
     const itemWeight = $("tr.size-weight")
         .first()
@@ -30,8 +22,6 @@ function extractInfo($) {
         .replace(/[A-z]+/g, "");
 
     return {
-        title,
-        price,
         description,
         itemWeight,
         itemDimensions,
@@ -42,18 +32,6 @@ function extractInfo($) {
 async function parseProductPage($, request) {
 
     const item = await extractInfo($);
-
-    const keywords = request.userData.keyword.split(' ');
-    const title = item.title.toLowerCase();
-
-    for (const k of keywords) {
-      if (!title.search(k.toLowerCase())) {
-        return null;
-      }
-    }
-    
-    item.productUrl = request.url;
-
     return item;
 }
 
