@@ -22,8 +22,8 @@ async function extractSellers($, request) {
     return itemUrls;
 }
 
-async function parseItemUrls($,request) {
-    const urls = await extractSellers($,request);
+async function parseItemUrls($, request) {
+    const urls = await extractSellers($, request);
     console.log(`Found ${urls.length} on a site, going to crawl them.`);
     return urls;
 }

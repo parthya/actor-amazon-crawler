@@ -94,8 +94,9 @@ Apify.main(async () => {
             } else if (request.userData.label === 'product') {
               try {
                 const item = await parseProductPage($, request);
-                await Apify.pushData(item);
-
+                if (item) {
+                  await Apify.pushData(item);
+                }
               } catch (error) {
                   console.error(error);
               }

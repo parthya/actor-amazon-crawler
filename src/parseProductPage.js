@@ -42,6 +42,16 @@ function extractInfo($) {
 async function parseProductPage($, request) {
 
     const item = await extractInfo($);
+
+    const keywords = request.userData.keyword.split(' ');
+    const title = item.title.toLowerCase();
+
+    for (const k of keywords) {
+      if (!title.search(k.toLowerCase())) {
+        return null;
+      }
+    }
+    
     item.productUrl = request.url;
 
     return item;
