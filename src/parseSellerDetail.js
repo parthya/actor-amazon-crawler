@@ -89,9 +89,12 @@ async function parseSellerDetail($, request) {
     const title = item.title.toLowerCase();
     console.log('****TITLE****', title);
 
+    let found = true;
     for (const k of keywords) {
       console.log('****KEYWORD****', k);
-      if (!title.search(k.toLowerCase())) {
+      found = title.search(k.toLowerCase());
+      console.log('****found****', found);
+      if (!found) {
         return null;
       }
     }
