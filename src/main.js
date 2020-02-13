@@ -91,7 +91,7 @@ Apify.main(async () => {
                     });
                 }
                 // extract info about item and about seller offers
-            } else if (request.userData.label === 'seller') {
+            } else if (request.userData.label === 'product') {
               try {
                 const item = await parseProductPage($, request);
                 await Apify.pushData(item);
