@@ -4,6 +4,7 @@ const createSearchUrls = require('./createSearchUrls');
 const parseSellerDetail = require('./parseSellerDetail');
 const parseItemUrls = require('./parseItemUrls');
 const parsePaginationUrl = require('./parsePaginationUrl');
+const parseProductPage = require('./parseProductPage');
 const { saveItem, getOriginUrl } = require('./utils');
 const SessionsCheerioCrawler = require('./crawler');
 
@@ -64,6 +65,14 @@ Apify.main(async () => {
                     const items = await parseItemUrls($, request);
                     for (const item of items) {
                         await requestQueue.addRequest({
+                            url: item.detailUrl,
+                            userData: {
+                                label: 'product',
+                                keyword: request.userData.keyword
+                            },
+                        }, { forefront: true });
+
+                        await requestQueue.addRequest({
                             url: item.url,
                             userData: {
                                 label: 'seller',
@@ -83,6 +92,14 @@ Apify.main(async () => {
                 }
                 // extract info about item and about seller offers
             } else if (request.userData.label === 'seller') {
+              try {
+                const item = await parseProductPage($, request);
+                await Apify.pushData(item);
+
+              } catch (error) {
+                  console.error(error);
+              }
+            } else if (request.userData.label === 'seller') {
                 try {
                     const item = await parseSellerDetail($, request);
                     if (item) {
@@ -93,7 +110,6 @@ Apify.main(async () => {
                         } else {
                             paginationUrlSeller = false;
                         }
-
                         // if there is a pagination, go to another page
                         if (paginationUrlSeller !== false) {
                             console.log(`Seller detail has pagination, crawling that now -> ${paginationUrlSeller}`);
