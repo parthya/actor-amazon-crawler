@@ -14,8 +14,10 @@ function extractInfo($) {
 
     const itemWeight = $("tr.size-weight:nth-of-type(1)")
         .text()
-        .replace(/\w{3}/g, "");
+        //.replace(/\w{3}/g, "");
 
+    console.log(itemWeight);
+    
     const itemDimensions = $("tr.size-weight:nth-of-type(2)")
         .text()
         .replace(/\w{3}/g, "");
@@ -27,7 +29,7 @@ function extractInfo($) {
     return {
         title,
         description,
-        itemWeight,
+        //itemWeight,
         itemDimensions,
         modelNumber
     };
