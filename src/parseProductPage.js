@@ -1,26 +1,21 @@
 /* global $ */
 
 function extractInfo($) {
+
     const description = String(
-        $("div#productDescription")
+        $("div#featurebullets_feature_div")
             .text()
             .replace(/\r?\n|\r/g, "")
     )
         .trim()
         .replace(/\t/g, "");
+
     const title = String($("span#productTitle").text()).trim();
 
-    const price = String(
-        $("span.a-color-price")
-            .first()
-            .text()
-            .replace(/\r?\n|\r/g, "")
-    ).trim();
-
-    const itemWeight = $("tr.size-weight")
-        .first()
+    const itemWeight = $("tr.size-weight:nth-of-type(1)")
         .text()
         .replace(/\w{3}/g, "");
+
     const itemDimensions = $("tr.size-weight:nth-of-type(2)")
         .text()
         .replace(/\w{3}/g, "");
@@ -31,7 +26,6 @@ function extractInfo($) {
 
     return {
         title,
-        price,
         description,
         itemWeight,
         itemDimensions,
