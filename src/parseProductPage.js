@@ -12,12 +12,12 @@ function extractInfo($) {
 
     const title = String($("span#productTitle").text()).trim();
 
-    const itemWeight = $("tr.size-weight:nth-of-type(1)")
+    const itemWeight = $("tr.size-weight:td.value")
         .text()
         //.replace(/\w{3}/g, "");
 
     console.log(itemWeight);
-    
+
     const itemDimensions = $("tr.size-weight:nth-of-type(2)")
         .text()
         .replace(/\w{3}/g, "");
