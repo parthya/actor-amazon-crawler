@@ -112,6 +112,9 @@ Apify.main(async () => {
                                     label: 'seller',
                                     keyword: request.userData.keyword,
                                     sellers: item.sellers,
+                                    asin: item.asin,
+                                    detailUrl: item.itemDetailUrl,
+                                    sellerUrl: item.sellerOffersUrl
                                 },
                             }, { forefront: true });
                         } else {
