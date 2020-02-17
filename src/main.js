@@ -5,7 +5,7 @@ const parseSellerDetail = require('./parseSellerDetail');
 const parseItemUrls = require('./parseItemUrls');
 const parsePaginationUrl = require('./parsePaginationUrl');
 const parseProductPage = require('./parseProductPage');
-const { saveItem, getOriginUrl } = require('./utils');
+const { getOriginUrl } = require('./utils');
 const SessionsCheerioCrawler = require('./crawler');
 
 // TODO: Add an option to limit number of results for each keyword
@@ -65,14 +65,6 @@ Apify.main(async () => {
                     const items = await parseItemUrls($, request);
                     for (const item of items) {
                         await requestQueue.addRequest({
-                            url: item.detailUrl,
-                            userData: {
-                                label: 'product',
-                                keyword: request.userData.keyword
-                            },
-                        }, { forefront: true });
-
-                        await requestQueue.addRequest({
                             url: item.url,
                             userData: {
                                 label: 'seller',
@@ -124,13 +116,23 @@ Apify.main(async () => {
                             }, { forefront: true });
                         } else {
                             console.log(`Saving item url: ${request.url}`);
-                            await saveItem('RESULT', request, item, input, env.defaultDatasetId);
-                            // await Apify.pushData(item);
+
+                            await requestQueue.addRequest({
+                                url: item.itemDetailUrl,
+                                userData: {
+                                    label: 'product',
+                                    keyword: request.userData.keyword,
+                                    asin: item.asin,
+                                    detailUrl: item.itemDetailUrl
+                                },
+                            }, { forefront: true });
+
+                            // await saveItem('RESULT', request, item, input, env.defaultDatasetId);
+                            await Apify.pushData(item);
                         }
                     }
                 } catch (error) {
                     console.error(error);
-                    await saveItem('NORESULT', request, null, input, env.defaultDatasetId);
                 }
             }
         },

@@ -12,15 +12,18 @@ function extractInfo($) {
 
     const title = String($("span#productTitle").text()).trim();
 
-    const itemWeight = $("tr.size-weight:td.value")
+    const itemWeight = $("tr.size-weight:nth-of-type(1)")
         .text()
-        //.replace(/\w{3}/g, "");
 
-    console.log(itemWeight);
+    const fd_1 = itemWeight.match(/\d/)
+    const idx_1 = itemWeight.indexOf(fd_1)
 
     const itemDimensions = $("tr.size-weight:nth-of-type(2)")
         .text()
         .replace(/\w{3}/g, "");
+
+    const fd_2 = itemDimensions.match(/\d/)
+    const idx_2 = itemDimensions.indexOf(fd_2)
 
     const modelNumber = $("tr.item-model-number")
         .text()
@@ -29,8 +32,8 @@ function extractInfo($) {
     return {
         title,
         description,
-        //itemWeight,
-        itemDimensions,
+        itemWeight: itemWeight.slice(idx_1),
+        itemDimensions: itemDimensions.slice(idx_2),
         modelNumber
     };
 }
@@ -49,6 +52,9 @@ async function parseProductPage($, request) {
         return null;
       }
     }
+
+    item.asin = request.userData.asin;
+    item.detailUrl = request.userData.detailUrl;
 
     return item;
 }

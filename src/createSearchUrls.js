@@ -46,7 +46,7 @@ async function createSearchUrls(input) {
     }
     searchUrlBase = getBaseUrl(input.country);
     return input.keywords.map((keyword) => ({
-        url: `${searchUrlBase}s?k=${keyword.replace(/\\s/g, '+').trim()}`,
+        url: `${searchUrlBase}s?k="${keyword.replace(/\\s/g, '+').trim()}"`,
         userData: {
             label: 'page',
             keyword,

@@ -7,16 +7,22 @@ async function extractSellers($, request) {
     const originUrl = await getOriginUrl(request)
     const itemUrls = [];
     const items = $('.s-result-list [data-asin]');
+
     if (items.length !== 0) {
         items.each(function () {
             const asin = $(this).attr('data-asin');
             const sellerUrl = `${originUrl}/gp/offer-listing/${asin}`;
-            itemUrls.push({
-                url: sellerUrl,
-                asin,
-                detailUrl: `${originUrl}/dp/${asin}`,
-                sellerUrl,
-            });
+            const adHolder = $(this).attr('class').includes('AdHolder');
+
+            if (!adHolder) {
+                itemUrls.push({
+                    url: sellerUrl,
+                    asin,
+                    detailUrl: `${originUrl}/dp/${asin}`,
+                    sellerUrl,
+                });
+            }
+
         });
     }
     return itemUrls;

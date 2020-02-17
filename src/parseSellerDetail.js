@@ -86,7 +86,13 @@ async function parseSellerDetail($, request) {
 
     const item = await extractInfo($);
     const keywords = request.userData.keyword.split(' ');
-    const title = item.title.toLowerCase();
+
+    let title;
+    if (item.title) {
+        title = item.title.toLowerCase();
+    } else {
+        return null;
+    }
 
     let found = true;
     for (const k of keywords) {
@@ -97,18 +103,22 @@ async function parseSellerDetail($, request) {
     }
 
     const sellers = await extractSellers($, request);
-
-    if (sellers.length < 1) {
-      return null;
-    }
-
     const currency = await getCurrency(request);
 
     if (request.userData.sellers) {
-        item.sellers = request.userData.sellers.concat(sellers);
+        if (sellers.length > 0 && sellers[0].priceParsed < request.userData.sellers[0].priceParsed) {
+            item.sellers = sellers;
+        } else {
+            item.sellers = request.userData.sellers;
+        }
     } else {
         item.sellers = sellers;
     }
+
+    if (item.sellers.length < 1) {
+      return null;
+    }
+
     const { keyword, asin, detailUrl, sellerUrl, country } = request.userData;
     item.keyword = keyword;
     item.asin = asin;
