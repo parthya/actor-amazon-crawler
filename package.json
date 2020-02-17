@@ -5,8 +5,7 @@
 	"main": "main.js",
 	"dependencies": {
 		"apify": "^0.15.5",
-		"fetch-cookie": "^0.7.3",
-		"node-fetch": "^2.6.0",
+		"request-promise": "^4.2.4",
 		"parse-price": "^1.1.8",
 		"query-string": "^6.8.1",
 		"url": "^0.11.0",

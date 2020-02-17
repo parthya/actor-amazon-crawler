@@ -1,7 +1,5 @@
 const Apify = require('apify');
-//const rp = require('request-promise');
-const nodeFetch = require('node-fetch')
-const fetch = require('fetch-cookie')(nodeFetch)
+const rp = require('request-promise');
 
 // TODO clean the session part
 
@@ -21,12 +19,12 @@ class SessionCheerioCrawler extends Apify.CheerioCrawler {
     }
 
     __createSession() {
-        // const jar = fetch;
+        const jar = rp.jar();
         return {
             name: Math.random().toString(),
             usage: 0,
             userAgent: Apify.utils.getRandomUserAgent(),
-            jar: fetch,
+            jar,
             blocks: 0,
         };
     }
