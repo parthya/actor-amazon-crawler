@@ -1,7 +1,7 @@
 function getBaseUrl(country) {
     const baseUrls = {
         US: 'https://www.amazon.com/',
-        GB: 'https://www.amazon.co.uk/',
+        UK: 'https://www.amazon.co.uk/',
         DE: 'https://www.amazon.de/',
         ES: 'https://www.amazon.es/',
         FR: 'https://www.amazon.fr/',
